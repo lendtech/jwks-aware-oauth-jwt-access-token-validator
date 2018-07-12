@@ -12,3 +12,5 @@ For standing up local Kong environment, docker and docker-compose setup is requi
 ```
 docker-compose build --force-rm  && docker-compose up -d
 ```
+
+This component provides a derivative work from original Rest OIDC implementation (refer [here](https://github.com/zmartzone/lua-resty-openidc))
