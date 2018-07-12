@@ -9,5 +9,6 @@ For Client application: https://oidc-simple-client.azurewebsites.net/
 
 
 For standing up local Kong environment, docker and docker-compose setup is required. Clone the repository and fire following commands:
-- docker-compose build --force-rm 
-- docker-compose up -d
+```
+docker-compose build --force-rm  && docker-compose up -d
+```
