@@ -27,7 +27,7 @@ return {
     ensure_consumer_present = {type = "boolean", required = false, default = false},
     consumer_claim_name = {type = "string", default = "appid"},
     run_on_preflight = {type = "boolean", required = false, default = false},
-    upstream_jwt_header_name = {type = "string", required = false, default = "jwt"},
+    upstream_jwt_header_name = {type = "string", required = false, default = "validated_jwt"},
     accept_none_alg = {type = "boolean", required = false, default = false},
     iat_slack = {type = "number", required = false, default = 120, func = check_positive},
     anonymous = {type = "string", default = "", func = check_user},

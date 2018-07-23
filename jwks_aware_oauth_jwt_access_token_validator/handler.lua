@@ -10,6 +10,7 @@ local singletons = require "kong.singletons"
 local cjson = require("cjson")
 local get_method = ngx.req.get_method
 local req_set_header = ngx.req.set_header
+local req_clear_header = ngx.req.clear_header
 
 JwksAwareJwtAccessTokenHandler.PRIORITY = 1000
 
@@ -43,6 +44,17 @@ local function extract(config)
   
   ngx.log(ngx.DEBUG, "JWT token located using header: " .. config.token_header_name .. ", token length: " .. string.len(jwt))
   return jwt, err
+end
+
+local function updateHeaders(config, token)
+  req_clear_header(config.token_header_name) -- Clear Original header from request
+  ngx.log(ngx.DEBUG, "Setting header: " .. config.upstream_jwt_header_name .. " with validated token")
+  req_set_header(config.upstream_jwt_header_name, token)
+end
+
+local function validateTokenContents(config, token, json)
+  -- TODO: Check for possible issuer, audience and other configurable claims verification
+  -- TODO: Validate for access token expiration etc.
 end
 
 
@@ -92,25 +104,32 @@ function handle(config)
     else
       ngx.log(ngx.DEBUG, "JwksAwareJwtAccessTokenHandler - Successfully validated access token")
       if config.ensure_consumer_present then
+        -- consumer presence is required
         ngx.log(ngx.DEBUG, "Consumer presence is required")
         local cid = json[config.consumer_claim_name]
         if cid == nil or cid == '' then
+          -- consumer id claim not read
           ngx.log(ngx.ERR, "Consumer ID could not be read using claim: " .. config.consumer_claim_name)
           utils.exit(ngx.HTTP_UNAUTHORIZED, error, ngx.HTTP_UNAUTHORIZED)
         else
           ngx.log(ngx.DEBUG, "Consumer ID: " .. cid .. " read using claim: " .. config.consumer_claim_name)
           local consumer, e = load_consumer(cid)
           if consumer == null or e then
+            -- consumer can't be loaded from Kong
             ngx.log(ngx.ERR, "Consumer ID could not be fetched for cid: " .. cid)
             utils.exit(ngx.HTTP_UNAUTHORIZED, error, ngx.HTTP_UNAUTHORIZED)
           else
+            --  consumer succesfully loaded from kong
             ngx.ctx.authenticated_consumer = consumer
             ngx.ctx.authenticated_credential = cid
-            req_set_header(config.upstream_jwt_header_name, token) -- TODO: Not working, to be tested!
-            -- TODO: Check for possible issuer, audience and other configurable claims verification
-            -- TODO: Validate for access token expiration etc.
+            updateHeaders(config, token)
+            validateTokenContents(config, token, json)
           end
         end
+      else
+        -- consumer presence is not required
+        updateHeaders(config, token)
+        validateTokenContents(config, token, json)
       end
     end
   end
