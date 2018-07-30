@@ -33,6 +33,7 @@ services:
   kong:
     build: 
       context: .
+      dockerfile: ./Dockerfile
     container_name: kong
     environment:
       - KONG_DATABASE=postgres

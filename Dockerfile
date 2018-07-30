@@ -10,11 +10,11 @@ RUN apk update && apk upgrade && \
     rm -rf /var/cache/apk/*
 
 
-# Install custom plugin
+# Install plugin dependencies
 RUN luarocks install lua-resty-openidc
 RUN luarocks install kong-oidc
 
-COPY ./jwks_aware_oauth_jwt_access_token_validator /usr/local/share/lua/5.1/kong/plugins/jwks_aware_oauth_jwt_access_token_validator
+COPY ./kong/plugins/jwks_aware_oauth_jwt_access_token_validator /usr/local/share/lua/5.1/kong/plugins/jwks_aware_oauth_jwt_access_token_validator
 
 ENV KONG_CUSTOM_PLUGINS=jwks_aware_oauth_jwt_access_token_validator
 
