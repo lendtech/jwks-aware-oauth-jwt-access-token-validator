@@ -50,7 +50,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ############ History ##################
 Date	Who		Why
 7/11/18 @gt_tech	The crude "issuer" match from discovered data doesn't work 
-			well with how certain OIDC providers (like Azure) OIDC generates.
+			well with how certain OIDC providers (like Azure) 
+                        generates that value. Check is made configurable thru "opts".
 
 --]]
 
