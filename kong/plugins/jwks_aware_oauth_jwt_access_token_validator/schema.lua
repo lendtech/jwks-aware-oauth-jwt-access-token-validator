@@ -76,6 +76,7 @@ return {
     upstream_jwt_header_name = {type = "string", required = true, default = "validated_jwt"},
     accept_none_alg = {type = "boolean", required = false, default = false},
     iat_slack = {type = "number", required = false, default = 120, func = check_positive},
+    timeout = {type = "number", required = false, default = 3000, func = check_positive},
     anonymous = {type = "string", default = "", func = check_user},
     filters = { type = "string" }
   },

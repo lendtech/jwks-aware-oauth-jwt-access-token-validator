@@ -39,7 +39,8 @@ curl -i -X GET \
 curl -i -X POST \
   --url http://localhost:8001/services/example-service/plugins/ \
   --data 'name=jwks_aware_oauth_jwt_access_token_validator' \
-  --data 'config.discovery=https://login.microsoftonline.com/b3bae44c-fc92-4bb3-a366-d559e07ca19a/.well-known/openid-configuration'
+  --data 'config.discovery=https://login.microsoftonline.com/b3bae44c-fc92-4bb3-a366-d559e07ca19a/.well-known/openid-configuration' \
+  --data 'config.timeout=10000'
 
 
 

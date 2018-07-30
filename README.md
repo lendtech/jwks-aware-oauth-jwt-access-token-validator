@@ -28,6 +28,7 @@ This plugin can also be used in conjunction with other Kong plugins like Rate li
 | `config.upstream_jwt_header_name` | validated_jwt | true | Name of the request header to be used for sending validated JWT to upstream ORIGIN server. ORIGIN can simply extract desired claims from JWT without worrying about verification as verification is done by this plugin |
 | `config.accept_none_alg` | false | false | Setting to control unsigned JWT will ve accepted for authentication |
 | `config.iat_slack` | 120 | false | Duration in seconds for clock-skew between JWT issuer and Kong plugin |
+| `config.timeout` | 3000 | false | Duration in milli-seconds for timing out HTTP connections to `OIDC discovery` and `JWKS endpoint` |
 | `config.anonymous` |  | false | Anonymous user |
 | `config.filters` | | false | Comma-separated URI path patterns for request that should be ignored from plugin, for e.g. health check requests |
 

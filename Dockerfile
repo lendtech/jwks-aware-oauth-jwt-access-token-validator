@@ -14,7 +14,11 @@ RUN apk update && apk upgrade && \
 RUN luarocks install lua-resty-openidc
 RUN luarocks install kong-oidc
 
-COPY ./kong/plugins/jwks_aware_oauth_jwt_access_token_validator /usr/local/share/lua/5.1/kong/plugins/jwks_aware_oauth_jwt_access_token_validator
+
+RUN git clone https://gt_tech@bitbucket.org/gt_tech/jwks_aware_oauth_jwt_access_token_validator.git /tmp/jwt \
+&& mv /tmp/jwt/kong/plugins/jwks_aware_oauth_jwt_access_token_validator /usr/local/share/lua/5.1/kong/plugins/jwks_aware_oauth_jwt_access_token_validator
+
+# COPY ./kong/plugins/jwks_aware_oauth_jwt_access_token_validator /usr/local/share/lua/5.1/kong/plugins/jwks_aware_oauth_jwt_access_token_validator
 
 ENV KONG_CUSTOM_PLUGINS=jwks_aware_oauth_jwt_access_token_validator
 
