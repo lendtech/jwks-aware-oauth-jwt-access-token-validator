@@ -97,7 +97,7 @@ end
 
 local function validateTokenContents(config, token, json)
 
-  if not config.auto_discover_issuer then
+--  if not config.auto_discover_issuer then
     if config.expected_issuers and next(config.expected_issuers) ~= nil then
       -- validate issuer
       local validated_issuer = false
@@ -116,7 +116,7 @@ local function validateTokenContents(config, token, json)
         utils.exit(ngx.HTTP_UNAUTHORIZED, "Issuer not expected", ngx.HTTP_UNAUTHORIZED)
       end
     end
-  end
+--  end
 
 
   if config.accepted_audiences and next(config.accepted_audiences) ~= nil then
