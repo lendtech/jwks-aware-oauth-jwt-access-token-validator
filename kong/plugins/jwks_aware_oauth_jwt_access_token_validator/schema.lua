@@ -81,10 +81,10 @@ return {
     filters = { type = "string" }
   },
   self_check = function(schema, plugin_t, dao, is_update)
-    if plugin_t.ensure_consumer_present       
-    then
+    if plugin_t.ensure_consumer_present then
       if plugin_t.consumer_claim_name == nil or plugin_t.consumer_claim_name == '' then
-        return false, Errors.schema "consumer_claim_name must be defined when ensure_consumer_present is enabled"
+        -- return false, Errors.schema "consumer_claim_name must be defined when ensure_consumer_present is enabled"
+        plugin_t.consumer_claim_name = "appid"
       end
     end
     

@@ -142,7 +142,8 @@ end
 
 
 local function load_consumer(consumer_id)
-  local result, err = singletons.db.consumers:select { id = consumer_id }
+  ngx.log(ngx.DEBUG, "JwksAwareJwtAccessTokenHandler Attempting to find consumer: " .. consumer_id)
+  local result, err = singletons.dao.consumers:find { id = consumer_id }
   if not result then
     err = "Consumer: " .. consumer_id .. " not found!"
     ngx.log(ngx.ERR, err)
@@ -207,6 +208,7 @@ function handle(config)
             --  consumer succesfully loaded from kong
             ngx.ctx.authenticated_consumer = consumer
             ngx.ctx.authenticated_credential = cid
+            req_set_header("X-Consumer-Username", cid)
             updateHeaders(config, token)
             validateTokenContents(config, token, json)
           end
