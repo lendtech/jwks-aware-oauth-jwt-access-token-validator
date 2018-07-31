@@ -2,7 +2,7 @@
 
 This plugin is for authenticating API requests by means of bearer JWT tokens whose signatures can be verified by using a [JWK](https://tools.ietf.org/html/rfc7517) fetched from a remote JWKS endpoint.
 
-The default JWT plugin doesn't have the capability to work with JWKS which this plugin solves for.
+The default JWT plugin inbuilt with Kong Gateway doesn't have the capability to work with JWKS which this plugin solves for.
 
 This plugin can also be used for JWT obtained as a result of [OIDC](http://openid.net/connect/) in specific cases where IDP providers uses JWT bearer token format for OIDC/OAuth access tokens. (For e.g. [Azure OIDC](https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-v2-protocols-oidc)).
 
