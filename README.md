@@ -22,7 +22,7 @@ This plugin can also be used in conjunction with other Kong plugins like Rate li
 | `config.expected_issuers` | {} | false | Array of issuer values which are expected in in-coming JWT token. If this is left empty, issuer-check is not performed |
 | `config.accepted_audiences` | {} | false | Array of issuer values which are expected in in-coming JWT token. If this is left empty, issuer-check is not performed |
 | `config.jwk_expires_in` | 7200 | false | Duration for cache of JWKS in seconds |
-| `config.ensure_consumer_present` | false | false | Setting to ensure if consumer is present in Kong database. This setting enables setting of consumer in Kong context which can be used with other plugins like Rate-limiting plugin as example. |
+| `config.ensure_consumer_present` | false | false | Setting to ensure if consumer is present in Kong database. This setting enables setting of consumer in Kong context which can be used with other plugins like [Rate-limiting](https://docs.konghq.com/plugins/rate-limiting/) plugin as example. |
 | `config.consumer_claim_name` | appid | false | Name of the claim in JWT to obtain consumer value |
 | `config.run_on_preflight` | false | false | Setting to control if plugin would execute on `OPTIONS` request |
 | `config.upstream_jwt_header_name` | validated_jwt | true | Name of the request header to be used for sending validated JWT to upstream ORIGIN server. ORIGIN can simply extract desired claims from JWT without worrying about verification as verification is done by this plugin |
