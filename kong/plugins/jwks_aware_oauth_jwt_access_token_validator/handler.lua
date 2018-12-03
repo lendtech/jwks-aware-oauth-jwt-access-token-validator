@@ -45,6 +45,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 local BasePlugin = require "kong.plugins.base_plugin"
 local JwksAwareJwtAccessTokenHandler = BasePlugin:extend()
 local openidc = require("kong.plugins.jwks_aware_oauth_jwt_access_token_validator.resty-lib.openidc")
+local az = require("kong.plugins.jwks_aware_oauth_jwt_access_token_validator.authorization")
 local utils = require("kong.plugins.oidc.utils")
 local filter = require("kong.plugins.oidc.filter")
 local singletons = require "kong.singletons"
@@ -211,12 +212,18 @@ function handle(config)
             req_set_header("X-Consumer-Username", cid)
             updateHeaders(config, token)
             validateTokenContents(config, token, json)
+            if config.enable_authorization_rules then
+              az.validate_authorization(config, json)
+            end
           end
         end
       else
         -- consumer presence is not required
         updateHeaders(config, token)
         validateTokenContents(config, token, json)
+        if config.enable_authorization_rules then
+          az.validate_authorization(config, json)
+        end
       end
     end
   end
