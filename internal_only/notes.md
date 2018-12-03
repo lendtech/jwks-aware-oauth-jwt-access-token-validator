@@ -42,7 +42,15 @@ curl -i -X POST \
   --data 'config.discovery=https://login.microsoftonline.com/b3bae44c-fc92-4bb3-a366-d559e07ca19a/.well-known/openid-configuration' \
   --data 'config.timeout=10000'
 
-
+## OR ELSE Configure JWKS Aware JWT Plugin with Authorization support:
+curl -i -X POST \
+  --url http://localhost:8001/services/example-service/plugins/ \
+  --data 'name=jwks_aware_oauth_jwt_access_token_validator' \
+  --data 'config.discovery=https://login.microsoftonline.com/b3bae44c-fc92-4bb3-a366-d559e07ca19a/.well-known/openid-configuration' \
+  --data 'config.timeout=10000' \
+  --data 'config.enable_authorization_rules=true' \
+  --data 'config.authorization_claim_name=roleCodeNgis' \
+  --data 'config.whitelist=GET=NCR001'
 
 
 ## Forward request through Kong with Access token:

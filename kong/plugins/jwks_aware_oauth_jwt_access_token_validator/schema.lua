@@ -82,10 +82,10 @@ return {
     anonymous = {type = "string", default = "", func = check_user},
     filters = { type = "string" },
     enable_authorization_rules = { type = "boolean", required = true, default = false },
-    authorization_claim_name = { type = "string", required = "false", default = "roles" },
+    authorization_claim_name = { type = "string", required = "true", default = "roles" },
     implicit_authorize = { type = "boolean", required = true, default = false},
-    whitelist = { type = "array", required = false, default = {}},
-    blacklist = { type = "array", required = false, default = {}}
+    whitelist = { type = "array", required = true, default = {}},
+    blacklist = { type = "array", required = true, default = {}}
   },
   self_check = function(schema, plugin_t, dao, is_update)
     if plugin_t.ensure_consumer_present then
