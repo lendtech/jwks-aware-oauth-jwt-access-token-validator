@@ -114,11 +114,12 @@ Above example uses a issuer value from author's test setup. Users must use their
 
 ### Enable Authorization rules support
 Following plugin configuration options can be used to enable authorization rules support. Individual configuration details are explained above in __*"Plugin schema/configuration"*__ section. 
-1. enable_authorization_rules
-2. authorization_claim_name
-3. whitelist
-4. blacklist
-5. implicit_authorize
+
+* enable_authorization_rules
+* authorization_claim_name
+* whitelist
+* blacklist
+* implicit_authorize
 
 **Note** that blacklist rules result takes precedence over whitelist rules if a particular API request satisfies both the list's configuration.
 
