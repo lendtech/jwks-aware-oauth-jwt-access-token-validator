@@ -31,6 +31,11 @@ This plugin can also be used in conjunction with other Kong plugins like Rate li
 | `config.timeout` | 3000 | false | Duration in milli-seconds for timing out HTTP connections to `OIDC discovery` and `JWKS endpoint` |
 | `config.anonymous` |  | false | Anonymous user |
 | `config.filters` | | false | Comma-separated URI path patterns for request that should be ignored from plugin, for e.g. health check requests |
+| `config.enable_authorization_rules` | false | true | Enables supports for whitelist/blacklist based HTTP verb-specific authorization rules. By default authorization rules enforcement is disabled. |
+| `config.authorization_claim_name` | roles | true | Name of the JWT claim which will provide user claims. Target claim can carry a single value or else a multiple values (as an JSON Array) |
+| `config.whitelist` | {} | true | Verb-specific whitelist rules. For example: __GET=role1__ or when specifying multiple roles (colon-separated role names), __GET=role1;role2__.  For defining multiple verb-specific roles, this can be defined as  (multiple verb specific rules can be seperated by comma)- __config.whitelist=GET=role1;role2,POST=role3;role2,DELETE=role_admin__ |
+| `config.blacklist` | {} | true | Verb-specific blacklist rules. For example: __GET=role1__ or when specifying multiple roles (colon-separated role names), __GET=role10;role12__.  For defining multiple verb-specific roles, this can be defined as  (multiple verb specific rules can be seperated by comma)- __config.blacklist=GET=role20;role22,POST=role23;role22,DELETE=role_super_admin__ |
+| `config.implicit_authorize` | false | true | Used to enable implicit authorization of API request when no user claims are available in provided JWT or else no configuration is available with plugin for specific HTTP method. By default implicit authorization is disabled |
 
 ## How to use
 Refer to `EXAMPLE` section for more details.
@@ -107,6 +112,17 @@ curl -X PATCH http://localhost:8001/plugins/bc363893-f043-41aa-a657-30632a8d07e2
 
 Above example uses a issuer value from author's test setup. Users must use their environment specific value.
 
+### Enable Authorization rules support
+Following plugin configuration options can be used to enable authorization rules support. Individual configuration details are explained above in __*"Plugin schema/configuration"*__ section. 
+
+* enable_authorization_rules
+* authorization_claim_name
+* whitelist
+* blacklist
+* implicit_authorize
+
+**Note** that blacklist rules result takes precedence over whitelist rules if a particular API request satisfies both the list's configuration.
+
 ## Credit
 This plugin gives credit to [Kong OIDC](https://github.com/nokia/kong-oidc) plugin as well as [Resty OIDC](https://github.com/zmartzone/lua-resty-openidc) library as it leverages functionality provided by those components.
 
@@ -123,6 +139,5 @@ Licensed under the Apache License, Version 2.0 (the "License"); you may not use 
 http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-
 
 

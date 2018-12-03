@@ -43,6 +43,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 --]]
 local utils = require "kong.tools.utils"
 local Errors = require "kong.dao.errors"
+local az = require("kong.plugins.jwks_aware_oauth_jwt_access_token_validator.authorization")
 
 local function check_user(anonymous)
   if anonymous == "" or utils.is_valid_uuid(anonymous) then
@@ -59,6 +60,7 @@ local function check_positive(v)
 
   return true
 end
+
 
 return {
   no_consumer = true,
@@ -78,7 +80,12 @@ return {
     iat_slack = {type = "number", required = false, default = 120, func = check_positive},
     timeout = {type = "number", required = false, default = 3000, func = check_positive},
     anonymous = {type = "string", default = "", func = check_user},
-    filters = { type = "string" }
+    filters = { type = "string" },
+    enable_authorization_rules = { type = "boolean", required = true, default = false },
+    authorization_claim_name = { type = "string", required = "true", default = "roles" },
+    implicit_authorize = { type = "boolean", required = true, default = false},
+    whitelist = { type = "array", required = true, default = {}},
+    blacklist = { type = "array", required = true, default = {}}
   },
   self_check = function(schema, plugin_t, dao, is_update)
     if plugin_t.ensure_consumer_present then
@@ -91,6 +98,25 @@ return {
     if not is_update then
       if plugin_t.token_header_name == nil or plugin_t.token_header_name == '' then
           return false, Errors.schema "token_header_name must not be blank!"
+      end
+    end
+
+    if plugin_t.enable_authorization_rules then
+      if plugin_t.authorization_claim_name == nil or plugin_t.authorization_claim_name == '' then
+        return false, Errors.schema "authorization_claim_name must be defined when enable_authorization_rules is enabled"
+      else
+        local error, whitelist = az.parse_rules(plugin_t.whitelist)
+        if error ~= nil then
+          return false, Errors.schema "invalid whitelist for authorization"..error
+        else
+          --plugin_t.whitelist = whitelist
+        end
+        error, blacklist = az.parse_rules(plugin_t.blacklist)
+        if error ~= nil then
+          return false, Errors.schema "invalid blacklist for authorization"..error
+        else
+          --plugin_t.blacklist = blacklist
+        end
       end
     end
 
