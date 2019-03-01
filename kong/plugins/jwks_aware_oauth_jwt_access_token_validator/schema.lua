@@ -42,7 +42,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 --]]
 local utils = require "kong.tools.utils"
-local Errors = require "kong.dao.errors"
+local Errors = require "kong.db.errors"
 local az = require("kong.plugins.jwks_aware_oauth_jwt_access_token_validator.authorization")
 
 local function check_user(anonymous)
@@ -94,7 +94,7 @@ return {
         plugin_t.consumer_claim_name = "appid"
       end
     end
-    
+
     if not is_update then
       if plugin_t.token_header_name == nil or plugin_t.token_header_name == '' then
           return false, Errors.schema "token_header_name must not be blank!"
@@ -123,5 +123,3 @@ return {
     return true
   end
 }
-
-
