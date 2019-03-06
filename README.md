@@ -40,6 +40,11 @@ This plugin can also be used in conjunction with other Kong plugins like Rate li
 ## How to use
 Refer to `EXAMPLE` section for more details.
 
+## Compatibility
+Kong 1.0 
+(A minor change is needed in schema as explained in [pull request](https://bitbucket.org/gt_tech/jwks_aware_oauth_jwt_access_token_validator/pull-requests/2/kong-10-compatibility/diff) to make it work with older versions).
+
+
 ## Example setup
 A docker compose and Dockerfile is provided at the root of repository which provides easy test setup. `Dockerfile` lists the operating system package as well as plugin's transitive dependencies installation command along with the logic for copying this plugin at required location. These files can be used as reference to setup plugin in target environment.
 
