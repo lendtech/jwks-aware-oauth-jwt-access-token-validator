@@ -131,6 +131,9 @@ Following plugin configuration options can be used to enable authorization rules
 ## Credit
 This plugin gives credit to [Kong OIDC](https://github.com/nokia/kong-oidc) plugin as well as [Resty OIDC](https://github.com/zmartzone/lua-resty-openidc) library as it leverages functionality provided by those components.
 
+## Central package management
+[Luarocks](https://luarocks.org/modules/gttech/jwks_aware_oauth_jwt_access_token_validator)
+
 ## Bugs and feature requests
 Have a bug or a feature request? Please use [issue tracker](https://bitbucket.org/gt_tech/jwks_aware_oauth_jwt_access_token_validator/issues?status=new&status=open) to raise a request.
 
