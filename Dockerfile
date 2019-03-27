@@ -16,7 +16,7 @@ RUN luarocks install kong-oidc
 
 
 RUN git clone https://bitbucket.org/gt_tech/jwks_aware_oauth_jwt_access_token_validator.git /tmp/jwt \
-&& cd /tmp/jwt && git checkout tags/v1.0.0-RC3 \
+&& cd /tmp/jwt && git checkout tags/release-v0.1-1 \
 && mv /tmp/jwt/kong/plugins/jwks_aware_oauth_jwt_access_token_validator /usr/local/share/lua/5.1/kong/plugins/jwks_aware_oauth_jwt_access_token_validator
 
 #COPY ./kong/plugins/jwks_aware_oauth_jwt_access_token_validator /usr/local/share/lua/5.1/kong/plugins/jwks_aware_oauth_jwt_access_token_validator
