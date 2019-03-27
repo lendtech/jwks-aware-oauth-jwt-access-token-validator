@@ -9,6 +9,7 @@ description = {
   summary = "Kong JWKS aware JWT authentication Integration",
   license = "Apache 2.0",
   homepage = "https://bitbucket.org/gt_tech/jwks_aware_oauth_jwt_access_token_validator",
+  license = "Apache License 2.0",
   detailed = [[
       Kong JWKS aware JWT authentication Integration.
   ]],
