@@ -6,11 +6,11 @@ source = {
   tag = "v0.1-1"
 }
 description = {
-  summary = "Kong Azure AD Integration",
+  summary = "Kong JWKS aware JWT authentication Integration",
   license = "Apache 2.0",
   homepage = "https://bitbucket.org/gt_tech/jwks_aware_oauth_jwt_access_token_validator",
   detailed = [[
-      Kong Azure AD Integration.
+      Kong JWKS aware JWT authentication Integration.
   ]],
 }
 dependencies = {
