@@ -144,7 +144,19 @@ end
 
 local function load_consumer(consumer_id)
   ngx.log(ngx.DEBUG, "JwksAwareJwtAccessTokenHandler Attempting to find consumer: " .. consumer_id)
-  local result, err = singletons.dao.consumers:find { id = consumer_id }
+  local result
+  local err
+  
+  if singletons.dao ~= nil then
+    result, err = singletons.dao.consumers:find { id = consumer_id }
+  elseif singletons.db ~= nil then
+    result, err = singletons.db.consumers:find { id = consumer_id }
+  else
+    err = "Consumer: " .. consumer_id .. " can't be loaded as no known Kong DAO interface available (possible incompatible version)!"
+    ngx.log(ngx.ERR, err)
+    return nil, err
+  end
+  
   if not result then
     err = "Consumer: " .. consumer_id .. " not found!"
     ngx.log(ngx.ERR, err)
