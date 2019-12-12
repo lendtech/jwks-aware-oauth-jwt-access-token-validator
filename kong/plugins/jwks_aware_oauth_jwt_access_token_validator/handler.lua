@@ -151,7 +151,7 @@ local function load_consumer(consumer_id)
     result, err = singletons.dao.consumers:find { id = consumer_id }
   elseif singletons ~= nil and singletons.db ~= nil then
     result, err = singletons.db.consumers:find { id = consumer_id }
-  elseif kong ~= nil && kong.db ~= nil then
+  elseif kong ~= nil and kong.db ~= nil then
     result, err = kong.db.consumers:find { id = consumer_id }
   else
     err = "Consumer: " .. consumer_id .. " can't be loaded as no known Kong DAO interface available (possible incompatible version)!"
