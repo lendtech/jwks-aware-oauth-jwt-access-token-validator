@@ -41,85 +41,42 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @Author: https://bitbucket.org/gt_tech/
 
 --]]
+local typedefs = require "kong.db.schema.typedefs"
 local utils = require "kong.tools.utils"
 local Errors = require "kong.db.errors"
 local az = require("kong.plugins.jwks_aware_oauth_jwt_access_token_validator.authorization")
 
-local function check_user(anonymous)
-  if anonymous == "" or utils.is_valid_uuid(anonymous) then
-    return true
-  end
-
-  return false, "the anonymous user must be empty or a valid uuid"
-end
-
-local function check_positive(v)
-  if v < 0 then
-    return false, "should be 0 or greater"
-  end
-
-  return true
-end
-
-
 return {
-  no_consumer = true,
+  name = "jwks_aware_oauth_jwt_access_token_validator",
   fields = {
-    token_header_name = {type = "string", required = true, default = "Authorization"},
-    discovery = {type = "url", required = true},
-    auto_discover_issuer = {type = "boolean", required = false, default = false},
-    expected_issuers = {type = "array", required = false, default = {}},
-    accepted_audiences = {type = "array", required = false, default = {}},
-    ssl_verify = {type = "string", default = "no"},
-    jwk_expires_in = {type = "number", required = false, default = 7200, func = check_positive},
-    ensure_consumer_present = {type = "boolean", required = false, default = false},
-    consumer_claim_name = {type = "string", default = "appid"},
-    run_on_preflight = {type = "boolean", required = false, default = false},
-    upstream_jwt_header_name = {type = "string", required = true, default = "validated_jwt"},
-    accept_none_alg = {type = "boolean", required = false, default = false},
-    iat_slack = {type = "number", required = false, default = 120, func = check_positive},
-    timeout = {type = "number", required = false, default = 3000, func = check_positive},
-    anonymous = {type = "string", default = "", func = check_user},
-    filters = { type = "string" },
-    enable_authorization_rules = { type = "boolean", required = true, default = false },
-    authorization_claim_name = { type = "string", required = "true", default = "roles" },
-    implicit_authorize = { type = "boolean", required = true, default = false},
-    whitelist = { type = "array", required = true, default = {}},
-    blacklist = { type = "array", required = true, default = {}}
+    { consumer = typedefs.no_consumer },
+    { protocols = typedefs.protocols_http },
+    { config = {
+        type = "record",
+        fields = {
+          { token_header_name = {type = "string", required = true, default = "Authorization"}, },
+          { discovery = {type = "string", required = true}, },
+          { auto_discover_issuer = {type = "boolean", required = false, default = false}, },
+          { expected_issuers = {type = "array", required = false, elements = { type = "string" } }, },
+          { accepted_audiences = {type = "array", required = false, elements = { type = "string" } }, },
+          { ssl_verify = {type = "string", default = "no"}, },
+          { jwk_expires_in = {type = "number", required = false, default = 7200 }, },
+          { ensure_consumer_present = {type = "boolean", required = false, default = false}, },
+          { consumer_claim_name = {type = "string", default = "appid"}, },
+          { run_on_preflight = {type = "boolean", required = false, default = false}, },
+          { upstream_jwt_header_name = {type = "string", required = true, default = "validated_jwt"}, },
+          { accept_none_alg = {type = "boolean", required = false, default = false}, },
+          { iat_slack = {type = "number", required = false, default = 120 }, },
+          { timeout = {type = "number", required = false, default = 3000 }, },
+          { anonymous = {type = "string" }, },
+          { filters = { type = "string" }, },
+          { enable_authorization_rules = { type = "boolean", required = true, default = false }, },
+          { authorization_claim_name = { type = "string", required = true, default = "roles" }, },
+          { implicit_authorize = { type = "boolean", required = true, default = false }, },
+          { whitelist = { type = "array", required = false, elements = { type = "string" } }, },
+          { blacklist = { type = "array", required = false, elements = { type = "string" } }, },
+        },
+      },
+    },
   },
-  self_check = function(schema, plugin_t, dao, is_update)
-    if plugin_t.ensure_consumer_present then
-      if plugin_t.consumer_claim_name == nil or plugin_t.consumer_claim_name == '' then
-        -- return false, Errors.schema "consumer_claim_name must be defined when ensure_consumer_present is enabled"
-        plugin_t.consumer_claim_name = "appid"
-      end
-    end
-
-    if not is_update then
-      if plugin_t.token_header_name == nil or plugin_t.token_header_name == '' then
-          return false, Errors.schema "token_header_name must not be blank!"
-      end
-    end
-
-    if plugin_t.enable_authorization_rules then
-      if plugin_t.authorization_claim_name == nil or plugin_t.authorization_claim_name == '' then
-        return false, Errors.schema "authorization_claim_name must be defined when enable_authorization_rules is enabled"
-      else
-        local error, whitelist = az.parse_rules(plugin_t.whitelist)
-        if error ~= nil then
-          return false, Errors.schema "invalid whitelist for authorization"..error
-        else
-          --plugin_t.whitelist = whitelist
-        end
-        error, blacklist = az.parse_rules(plugin_t.blacklist)
-        if error ~= nil then
-          return false, Errors.schema "invalid blacklist for authorization"..error
-        else
-          --plugin_t.blacklist = blacklist
-        end
-      end
-    end
-
-    return true
-  end
 }

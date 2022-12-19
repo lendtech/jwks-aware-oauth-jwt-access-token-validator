@@ -1,22 +1,22 @@
 package = "jwks_aware_oauth_jwt_access_token_validator"
-version = "0.1-1"
+version = "3.0.0-0"
 supported_platforms = {"linux", "macosx"}
 source = {
-  url = "git://bitbucket.org/gt_tech/jwks_aware_oauth_jwt_access_token_validator",
-  tag = "v0.1-1"
+  url = "git://github.com/lendtech/jwks-aware-oauth-jwt-access-token-validator",
+  tag = "3.0.0-0"
 }
 description = {
   summary = "Kong JWKS aware JWT authentication Integration",
   license = "Apache 2.0",
-  homepage = "https://bitbucket.org/gt_tech/jwks_aware_oauth_jwt_access_token_validator",
+  homepage = "https://github.com/lendtech/jwks-aware-oauth-jwt-access-token-validator",
   license = "Apache License 2.0",
-  maintainer = "GT Tech",
+  maintainer = "lendtech",
   detailed = [[
       Kong JWKS aware JWT authentication Integration.
   ]],
 }
 dependencies = {
-  "kong-oidc ~> 1.1.0"
+  "kong-oidc ~> 3.0.0"
 }
 build = {
   type = "builtin",

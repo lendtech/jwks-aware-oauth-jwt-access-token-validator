@@ -1,3 +1,6 @@
+## What is this Fork?
+This fork updates the [jwks_aware_oauth_jwt_access_token_validator](https://bitbucket.org/gt_tech/jwks_aware_oauth_jwt_access_token_validator) plugin to make it compatible with version 3.x+ of Kong.
+
 ## What is "_jwks_aware_oauth_jwt_access_token_validator_" Kong plugin?
 
 This plugin is for authenticating API requests by means of bearer JWT tokens whose signatures can be verified by using a [JWK](https://tools.ietf.org/html/rfc7517) fetched from a remote JWKS endpoint.

@@ -42,13 +42,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 --]]
 
-local BasePlugin = require "kong.plugins.base_plugin"
-local JwksAwareJwtAccessTokenHandler = BasePlugin:extend()
+local kong_meta = require "kong.meta"
 local openidc = require("kong.plugins.jwks_aware_oauth_jwt_access_token_validator.resty-lib.openidc")
 local az = require("kong.plugins.jwks_aware_oauth_jwt_access_token_validator.authorization")
 local utils = require("kong.plugins.oidc.utils")
 local filter = require("kong.plugins.oidc.filter")
-local singletons = require "kong.singletons"
+local singletons = kong
 
 local cjson = require("cjson")
 local get_method = ngx.req.get_method
@@ -56,8 +55,10 @@ local req_set_header = ngx.req.set_header
 local req_clear_header = ngx.req.clear_header
 local next = next
 
-JwksAwareJwtAccessTokenHandler.PRIORITY = 1000
-
+local JwksAwareJwtAccessTokenHandler = {
+  VERSION = kong_meta.version,
+  PRIORITY = 1000,
+}
 
 local function extract(config) 
   local jwt
@@ -167,13 +168,7 @@ local function load_consumer(consumer_id)
   return result
 end
 
-function JwksAwareJwtAccessTokenHandler:new()
-  JwksAwareJwtAccessTokenHandler.super.new(self, "JwksAwareJwtAccessTokenHandler")
-end
-
 function JwksAwareJwtAccessTokenHandler:access(config)
-  JwksAwareJwtAccessTokenHandler.super.access(self)
-
   if not config.run_on_preflight and get_method() == "OPTIONS" then
     ngx.log(ngx.DEBUG, "JwksAwareJwtAccessTokenHandler pre-flight request ignored, path: " .. ngx.var.request_uri)
     return
